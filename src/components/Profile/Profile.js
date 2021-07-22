@@ -23,14 +23,14 @@ const Profile = () => {
         {currentUser.data.token.substr(currentUser.data.token.length - 20)}
       </p> */}
      
-      {/* <p>
-        <strong>Email:</strong> {currentUser.data.email}
-      </p> */}
-      <strong>Authorities:</strong>
+      <p>
+        <strong>Email:</strong> {currentUser.data.userData.email}
+      </p>
+      {/* <strong>Authorities:</strong>
       <ul>
         {currentUser.data.role &&
           currentUser.data.role.map((roles, index) => <li key={index}>{roles}</li>)}
-      </ul>
+      </ul> */}
     </div>
   );
 };

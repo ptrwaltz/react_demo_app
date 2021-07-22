@@ -26,17 +26,23 @@ const generateMnemonics = () => {
 };
 
 const App = () => {
+  const [showUserRole, setShowUserRole] = useState(false);
+  const [showAdminRole, setShowAdminRole] = useState(false);
 
   const { user: currentUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-
   useEffect(() => {
     history.listen((location) => {
       dispatch(clearMessage()); // clear message when changing location
     });
   }, [dispatch]);
 
-
+  useEffect(() => {
+    if (currentUser) {
+      setShowUserRole(false);
+      setShowAdminRole(true);
+    }
+  }, [currentUser]);
 
   const logOut = () => {
     dispatch(logout());
@@ -47,7 +53,6 @@ const App = () => {
       <div>
         {/* <button onClick={generateMnemonics}>generateMnemonics</button> */}
       <ToastContainer> </ToastContainer> 
-     
         <nav className="navbar navbar-expand navbar-dark bg-dark">
           <Link to={"/home"} className="navbar-brand" style={{paddingLeft: "20px"}}>
             Bounce
@@ -56,17 +61,22 @@ const App = () => {
 
           {currentUser ? (
             <div className="navbar-nav ml-auto">
+
+            {showAdminRole && (
             <li className="nav-item">
               <Link to={"/home"} className="nav-link">
                 Home
               </Link>
              </li>
+            )}
 
+              {showUserRole && (
               <li className="nav-item">
                 <Link to={"/profile"} className="nav-link">
-                  {currentUser.data.firstName}
+                  {currentUser.data.userData.role}
                 </Link>
               </li>
+              )}
               <li className="nav-item">
                 <a href="/login" className="nav-link" onClick={logOut}>
                   Sign Out

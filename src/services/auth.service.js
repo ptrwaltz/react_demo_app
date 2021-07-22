@@ -15,7 +15,7 @@ const register = (firstName, lastName , email, password , confirmPassword , role
 
 const login = (email, password) => {
   return axios
-    .post(API_URL + "login", {
+    .post("http://localhost:3333/api/auth/login", {
       email,
       password,
     })
