@@ -9,6 +9,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Profile from "./components/Profile/Profile";
 import EditProfile from "./components/Profile/EditProfile";
+import Dashboard from "./components/Dashboard/Dashboard";
 
 import { logout } from "./actions/auth";
 import { clearMessage } from "./actions/message";
@@ -97,6 +98,7 @@ const App = () => {
             <Route exact path="/register" component={Register} />
             <Route exact path="/profile" component={Profile} />
             <Route exact path={"/edit/:id"} component={EditProfile} />
+            <Route exact path="/dashboard" component={Dashboard} />
           </Switch>
         </div>
       </div>
