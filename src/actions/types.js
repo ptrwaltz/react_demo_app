@@ -9,3 +9,6 @@ export const CLEAR_MESSAGE = "CLEAR_MESSAGE";
 
 export const PROFILE_SUCCESS = "PROFILE_SUCCESS";
 export const PROFILE_FAIL = "PROFILE_FAIL";
+
+export const ALLUSER_SUCCESS = "ALLUSER_SUCCESS";
+export const ALLUSER_FAIL = "ALLUSER_FAIL";
