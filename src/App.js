@@ -18,6 +18,7 @@ import { history } from "./helpers/history";
 import { ToastContainer } from "react-toastify";
 import Home from "./components/Home";
 import { ethers } from "ethers";
+import Settings from "./components/Settings/Setting";
 
 /* Generate mnemonics - Install ether npm */
 const generateMnemonics = () => {
@@ -40,8 +41,8 @@ const App = () => {
 
   useEffect(() => {
     if (currentUser) {
-      setShowUserRole(false);
-      setShowAdminRole(true);
+      setShowUserRole(true);
+      setShowAdminRole(false);
     }
   }, [currentUser]);
 
@@ -97,6 +98,12 @@ const App = () => {
                 Sign Up
                 </Link>
               </li>
+
+              <li className="nav-item">
+                <Link to={"/settings"} className="nav-link">
+                Settings
+                </Link>
+              </li>
             </div>
           )}
         </nav>
@@ -109,6 +116,7 @@ const App = () => {
             <Route exact path="/profile" component={Profile} />
             <Route exact path={"/edit/:id"} component={EditProfile} />
             <Route exact path="/dashboard" component={Dashboard} />
+            <Route exact path="/settings" component={Settings} />
           </Switch>
         </div>
       </div>

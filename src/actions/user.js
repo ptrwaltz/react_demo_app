@@ -1,7 +1,5 @@
 import UserService from "../services/user.service";
 import {
-  ALLUSER_SUCCESS,
-  ALLUSER_FAIL,
   PROFILE_SUCCESS,
   PROFILE_FAIL,
   SET_MESSAGE,

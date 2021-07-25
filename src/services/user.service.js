@@ -1,5 +1,5 @@
 import axios from "axios";
-import authHeader from "./auth-header";
+// import authHeader from "./auth-header";
 
 const API_URL = "http://localhost:3333/api/admin/";
 
@@ -9,14 +9,10 @@ const getAllUser = () => {
       headers: {
         "Accept": "application/json",
         "Content-type": "application/json",
-        'Authorization': "Bearer " + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImlhdCI6MTYyNjg3OTUwNSwiZXhwIjoxNjI5NDcxNTA1fQ.qL9C0pppAPGl4xy3tZ737y2Mg85e2adC9GnTkQT9g1c',
+        'Authorization': "Bearer "+ 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImlhdCI6MTYyNjg3OTUwNSwiZXhwIjoxNjI5NDcxNTA1fQ.qL9C0pppAPGl4xy3tZ737y2Mg85e2adC9GnTkQT9g1c',
       }
     });
 };
-
-const getUser = () => {    
-    return axios.get(API_URL + "account_settings", { headers: authHeader() });
-  };
 
 const updateProfile = (firstName, lastName) => {
   const body = {
@@ -34,10 +30,9 @@ const updateProfile = (firstName, lastName) => {
       'Authorization': "Bearer " + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImlhdCI6MTYyNjg3OTUwNSwiZXhwIjoxNjI5NDcxNTA1fQ.qL9C0pppAPGl4xy3tZ737y2Mg85e2adC9GnTkQT9g1c',
     }
   });
-  };
+};
 
   export default {
     getAllUser,
-    getUser,
     updateProfile
   };

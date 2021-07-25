@@ -1,39 +1,53 @@
 import React, { useState, useEffect } from "react";
-import userService from "../services/user.service";
-import Footer from "./Layout/Footer";
+import UserService from "../services/user.service";
 
 const Home = () => {
-  const [content, setContent] = useState("");
+  const [users, setUser] = useState([]);
 
   useEffect(() => {
-    userService.getUser().then(
-      (response) => {
-        console.log(response);
-        setContent(response.data);
+      UserService.getAllUser().then((response) => {
+          console.log(response.data.data.records);
+          setUser((response.data.data.records));
       },
-      (error) => {
-        const _content =
-          (error.response && error.response.data) ||
-          error.message ||
-          error.toString();
+          (error) => {
+              const users =
+                  (error.response && error.response.data) ||
+                  error.message ||
+                  error.toString();
 
-        setContent(_content);
-      }
-    );
-  }, []);
-
-  return (
-    <div className="container">
-      <header className="jumbotron">
-        <h3>Home</h3>
-      </header>
-      
-      <Footer/>
-      
-
-    </div>
-
-  );
+              setUser(users);
+          }
+      );
+  }, [])
+     return (
+              <div>
+                  <h3>Users</h3>
+                  <table>
+                  <thead>
+                  <tr>
+                      <th>Email</th>
+                      <th>Created At</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                  </tr>
+                  </thead>
+               <tbody>
+                   {
+                      users && users.map((user) => {
+                          return <tr key={user.id}>
+                              <td>{user.email}</td>
+                              <td>
+                                  {user.created_at}
+                              </td>
+                              <td>{user.is_active == 1 ? 'ACTIVE' : 'INACTIVE'}</td>
+                              <td></td>
+                          </tr>;
+                   })
+                  }
+               </tbody>
+                  </table>
+              </div>
+          )
 };
 
 export default Home;

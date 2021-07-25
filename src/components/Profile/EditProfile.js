@@ -44,7 +44,7 @@ const EditProfile = (props) => {
 
     /* To get user data and bind to input values */
     useEffect( () => {
-        setFirstname(currentUser.data.firstName);
+        setFirstname(currentUser.data.userData.email);
         setLastname(currentUser.data.lastName);
    }, []) 
 
@@ -76,7 +76,7 @@ const EditProfile = (props) => {
                 AlertService.showError(message)
               setSuccessful(false);
             });
-        }
+         }
       };
 
     return (

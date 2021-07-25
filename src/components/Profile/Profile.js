@@ -24,7 +24,10 @@ const Profile = () => {
       </p> */}
      
       <p>
-        <strong>Email:</strong> {currentUser.data.userData.email}
+        <strong>Email:</strong> {currentUser.data.userData.email || 'NA'}
+      </p>
+      <p>
+        <strong>Role:</strong> {currentUser.data.userData.role || 'NA'}
       </p>
       {/* <strong>Authorities:</strong>
       <ul>
