@@ -15,6 +15,7 @@ const getSettings = () => {
 };
 
 const updateSettings = (formData) => {
+    console.log(formData);
 
     // let obj = {
     //     "application_name": formData.applicationName,

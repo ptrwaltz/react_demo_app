@@ -1,63 +1,35 @@
-import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
-import { useEffect, useRef, useState } from "react";
+
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getSettings, updateSettings } from "../../actions/settings";
+import settingService from "../../services/settings.service";
 import AlertService from "../../services/alert.service";
+import { updateSettingAction } from "../../actions/settings";
 
 const Settings = (props) => {
 
-    const form = useRef();
+    const [applicationName, setApplicationName] = useState('')
+    const [coinName, setCoinName] = useState('')
+    const [logo, setLogo] = useState('')      
 
-    const { message } = useSelector(state => state.message);
-    const [successful, setSuccessful] = useState(false);
-    const dispatch = useDispatch();
+      const [successful, setSuccessful] = useState(false);
 
-    // const [applicationName, setApplicationName] = useState('');
-    // const [coinName, setCoinName] = useState('');
+      const dispatch = useDispatch();
 
-    const settings = useSelector(state => state.setting.settings);
+      const getSetting = () =>{
+        settingService.getSettings().then(response=>{
+            setApplicationName(response.data.data.application_name);
+            setCoinName(response.data.data.coin_name);   
+            setLogo(response.data.data.logo) 
 
-    const [applicationName, setApplicationName] = useState(settings.application_name)
-    const [coinName, setCoinName] = useState(settings.coin_name)
-    const [logo, setLogo] = useState(settings.logo)
+        }) .catch(e => {
+            console.log(e);
+          });
+      }
     
    /* useDispatch- React hook method to update the state */
     useEffect(() => { 
-        dispatch(getSettings());  
-        setApplicationName(settings.application_name);
-        setCoinName(settings.coin_name);   
-        setLogo(settings.logo) 
+        getSetting();
     }, [])
-
-
-    const handleUpdateSettings = () => {
-        setSuccessful(false);
-
-        // Create an object of formData
-        const formData = new FormData();
-
-        // Update the formData object
-        formData.append("logo", logo);
-        formData.append("application_name", applicationName);
-        formData.append("coin_name", coinName);
-        formData.append("coin_symbol", "100X");
-        formData.append("invite_limit", 10);
-        formData.append("coinsmarketcap_endpoint", "SADFGR");
-        formData.append("coinsmarketcap_api_key", null);
-
-        console.log(formData);
-        dispatch(updateSettings(formData))
-            .then(() => {
-                setSuccessful(true);
-                AlertService.showSuccess("Settings updated successfully")
-            })
-            .catch(() => {
-                AlertService.showError(message)
-                setSuccessful(false);
-            });
-    }
-
     const onChangeApplicationName = (e) => {
         const applicationname = e.target.value;
         setApplicationName(applicationname);
@@ -71,40 +43,62 @@ const Settings = (props) => {
     const onChangeLogo = (evt) => {
         const logo = evt.target.files[0];
         console.log(logo);
-        setLogo(logo);
+        setLogo(URL.createObjectURL(evt.target.files[0]));
     }
+
+
+      const updateContent = () => {
+        const formData = new FormData();
+        formData.append("logo", logo);
+        formData.append("application_name", applicationName);
+        formData.append("coin_name", coinName);
+        formData.append("coin_symbol", "100X");
+        formData.append("invite_limit", 10);
+        formData.append("coinsmarketcap_endpoint", "SADFGR");
+        formData.append("coinsmarketcap_api_key", null);
+        dispatch(updateSettingAction(formData))
+          .then(response => {
+            setSuccessful(true);
+            AlertService.showSuccess("Settings updated successfully")
+          })
+          .catch(e => {
+            console.log(e);
+          });
+      };
+
     return (
         <div className="col-md-12">
+             {applicationName ? (
             <div className="card card-container">
-                <Form ref={form}>
+                <form>
 
                     <div>
                         <div className="form-group">
-                            <label htmlFor="applicationName">Application Name</label>
-                            <Input
+                            <label htmlFor="application_name">Application Name</label>
+                            <input
                                 type="text"
                                 className="form-control"
-                                name="applicationName"
-                                value={applicationName || ''}
+                                name="application_name"
+                                value={applicationName}
                                 onChange={onChangeApplicationName}
                             />
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="coinName">Coin Name</label>
-                            <Input
+                            <label htmlFor="coin_name">Coin Name</label>
+                            <input
                                 type="text"
                                 className="form-control"
-                                name="coinName"
-                                value={coinName || ''}
+                                name="coin_name"
+                                value={coinName}
                                 onChange={onChangeCoinName}
                             />
                         </div>
 
                         <div className="form-group">
                             <label htmlFor="logo">Logo</label>
-                            <img src="settings.logoz"></img>
-                            <Input
+                            <img src={`http://localhost:3333/${logo}`} style={{width:"100%"}}></img>
+                            <input
                                 type="file"
                                 className="form-control"
                                 name="logo"                               
@@ -114,14 +108,20 @@ const Settings = (props) => {
 
                         <div className="form-group p-3 mb-4">
                             <div className="text-center">
-                                <button type="button" onClick={handleUpdateSettings} className="btn btn-dark btn-block">Update</button>
+                                <button type="button" onClick={updateContent} className="btn btn-dark btn-block">Update</button>
                             </div>
                         </div>
                     </div>
-                    {/* <CheckButton style={{ display: "none" }} ref={checkBtn} /> */}
-                </Form>
+                </form>
             </div>
-        </div>
+        ) : (
+            <div>
+              <br />
+              <p>Please click on a Tutorial...</p>
+            </div>
+          )}
+                  </div>
+
     );
 }
 
